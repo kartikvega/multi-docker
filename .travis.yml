@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t tkartik/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true tkartik/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t tkartik/multi-client ./client
+  - docker build -t tkartik/multi-nginx ./nginx
+  - docker build -t tkartik/multi-server ./server
+  - docker build -t tkartik/mult-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  - docker push tkartik/multi-client
+  - docker push tkartik/multi-nginx
+  - docker push tkartik/multi-server
+  - docker push tkartik/multi-worker
+
