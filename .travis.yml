@@ -13,7 +13,7 @@ after_success:
   - docker build -t tkartik/multi-nginx ./nginx
   - docker build -t tkartik/multi-server ./server
   - docker build -t tkartik/multi-worker ./worker
-  - docker login -username "$DOCKER_ID" -p "$DOCKER_PASSWORD" docker.io
+  - docker login --username "$DOCKER_ID" --password "$DOCKER_PASSWORD" docker.io
   - docker push tkartik/multi-client
   - docker push tkartik/multi-nginx
   - docker push tkartik/multi-server
